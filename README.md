@@ -186,16 +186,6 @@ http://localhost:8000
 - **UX/UI thinking:** Experiência fluida e intuitiva
 - **Documentação:** README completo e estruturado
 
-## 🔮 Próximas Melhorias (Roadmap)
-
-### Versão 2.0 Planejada
-- [ ] **PWA (Progressive Web App):** Instalação offline
-- [ ] **Estatísticas:** Dashboard de produtividade
-- [ ] **Personalização:** Tempos customizáveis
-- [ ] **Temas:** Modo claro/escuro
-- [ ] **Notificações:** Desktop notifications
-- [ ] **Integração:** API para salvar sessões
-
 ## 👤 Autor
 
 **Daniella Dantas**  
