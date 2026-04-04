@@ -227,7 +227,7 @@ http://localhost:8000
 Este projeto é fictício e sem fins comerciais. As imagens foram geradas por IA no Adobe Firefly.
 
 ```
-Copyright © 2024 Daniella Dantas
+Copyright © 2026 Daniella Dantas
 
 Permissão é concedida para visualizar e utilizar este projeto para fins de
 aprendizado, portfólio e avaliação técnica. Proibida a redistribuição comercial.
