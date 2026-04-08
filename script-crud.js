@@ -3,15 +3,16 @@ const formAdicionarTarefa = document.querySelector('.app__form-add-task')
 const textarea = document.querySelector('.app__form-textarea')
 const ulTarefas = document.querySelector('.app__section-task-list')
 const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description')
-
 const btnRemoverConcluidas = document.querySelector('#btn-remover-concluidas')
 const btnRemoverTodas = document.querySelector('#btn-remover-todas')
+const btnCancelar = document.querySelector('.app__form-footer__button--cancel')
+const btnDeletar = document.querySelector('.app__form-footer__button--delete')
 
 let tarefas = JSON.parse(localStorage.getItem('tarefas')) || []
 let tarefaSelecionada = null
 let liTarefaSelecionada = null
 
-function atualizarTarefas () {
+function atualizarTarefas() {
     localStorage.setItem('tarefas', JSON.stringify(tarefas))
 }
 
@@ -28,16 +29,16 @@ function criarElementoTarefa(tarefa) {
                 fill="#01080E"></path>
         </svg>
     `
+
     const paragrafo = document.createElement('p')
     paragrafo.textContent = tarefa.descricao
     paragrafo.classList.add('app__section-task-list-item-description')
 
     const botao = document.createElement('button')
     botao.classList.add('app_button-edit')
-
     botao.onclick = () => {
         const novaDescricao = prompt("Qual é o novo nome da tarefa?")
-        if (novaDescricao) {            
+        if (novaDescricao) {
             paragrafo.textContent = novaDescricao
             tarefa.descricao = novaDescricao
             atualizarTarefas()
@@ -53,39 +54,47 @@ function criarElementoTarefa(tarefa) {
     li.append(botao)
 
     if (tarefa.completa) {
-        liTarefaSelecionada.classList.add('app__section-task-list-item-complete')
+        li.classList.add('app__section-task-list-item-complete') // ✅ li, não liTarefaSelecionada
         botao.setAttribute('disabled', 'disabled')
     } else {
         li.onclick = () => {
-        document.querySelectorAll('.app__section-task-list-item-active')
-            .forEach(elemento => {
-                elemento.classList.remove('app__section-task-list-item-active')
-            })
-        if (tarefaSelecionada == tarefa) {
-            paragrafoDescricaoTarefa.textContent = ''
-            tarefaSelecionada = null
-            liTarefaSelecionada = null
-            return
-        }
-        tarefaSelecionada = tarefa
-        liTarefaSelecionada = li
-        paragrafoDescricaoTarefa.textContent = tarefa.descricao
+            document.querySelectorAll('.app__section-task-list-item-active')
+                .forEach(elemento => elemento.classList.remove('app__section-task-list-item-active'))
 
-        li.classList.add('app__section-task-list-item-active')
+            if (tarefaSelecionada == tarefa) {
+                paragrafoDescricaoTarefa.textContent = ''
+                tarefaSelecionada = null
+                liTarefaSelecionada = null
+                return
+            }
+
+            tarefaSelecionada = tarefa
+            liTarefaSelecionada = li
+            paragrafoDescricaoTarefa.textContent = tarefa.descricao
+            li.classList.add('app__section-task-list-item-active')
         }
     }
+
     return li
-}   
+}
 
 btnAdicionarTarefa.addEventListener('click', () => {
     formAdicionarTarefa.classList.toggle('hidden')
 })
 
+btnCancelar.addEventListener('click', () => {  // ✅ botão cancelar
+    formAdicionarTarefa.classList.add('hidden')
+    textarea.value = ''
+})
+
+btnDeletar.addEventListener('click', () => {  // ✅ botão deletar
+    textarea.value = ''
+    formAdicionarTarefa.classList.add('hidden')
+})
+
 formAdicionarTarefa.addEventListener('submit', (evento) => {
-    evento.preventDefault();
-    const tarefa = {
-        descricao: textarea.value
-    }
+    evento.preventDefault()
+    const tarefa = { descricao: textarea.value }
     tarefas.push(tarefa)
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)
@@ -97,7 +106,7 @@ formAdicionarTarefa.addEventListener('submit', (evento) => {
 tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)
-});
+})
 
 document.addEventListener('FocoFinalizado', () => {
     if (tarefaSelecionada && liTarefaSelecionada) {
@@ -111,9 +120,7 @@ document.addEventListener('FocoFinalizado', () => {
 
 const removerTarefas = (somenteCompletas) => {
     const seletor = somenteCompletas ? '.app__section-task-list-item-complete' : '.app__section-task-list-item'
-    document.querySelectorAll(seletor).forEach(elemento => {
-        elemento.remove()
-    })
+    document.querySelectorAll(seletor).forEach(elemento => elemento.remove())
     tarefas = somenteCompletas ? tarefas.filter(tarefa => !tarefa.completa) : []
     atualizarTarefas()
 }
